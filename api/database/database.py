@@ -16,3 +16,6 @@ with engine.connect() as connection:
 
 #Creamos la sesión de trabajo
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+#Creamos el objeto Base que nos servirá para definir los modelos
+Base = declarative_base()
