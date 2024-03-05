@@ -3,7 +3,7 @@ from api.database.database import Base
 
 from api.doc import tags_metadata
 
-from api.esquemas.models import Categoria as CategoriaModel
+from api.esquemas.models import Categoria as CategoriaModel,CategoriaCreate
 from api.database.models import Categoria as CategoriaModelDB
 from api.logica import categorialogica
 

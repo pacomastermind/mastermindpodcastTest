@@ -7,3 +7,7 @@ class Categoria(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CategoriaCreate(BaseModel):
+    nombre: str
+
