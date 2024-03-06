@@ -3,5 +3,10 @@ tags_metadata = [
     {
         "name": "categorias",
         "description": "Operaciones con tabla Categorias",
-    }
+    },
+    {
+        "name": "podcasts",
+        "description": "Operaciones con tabla Podcasts",
+    },
+
 ]

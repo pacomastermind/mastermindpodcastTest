@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from api import SessionLocal,engine
 
-from api import tags_metadata, categoriasrutas
+from api import tags_metadata, categoriasrutas, podcastsrutas
 
 # Objeto app de tipo FastApi
 app = FastAPI(
@@ -28,5 +28,12 @@ app.include_router(
     categoriasrutas,
     tags=["categorias"],
     prefix="/categorias",
+)
+
+#PODCASTS
+app.include_router(
+    podcastsrutas,
+    tags=["podcasts"],
+    prefix="/podcasts",
 )
 

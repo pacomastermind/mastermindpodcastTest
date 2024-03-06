@@ -25,6 +25,13 @@ def read_categoria(categoria_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Categoria no encontrada")
     return categoria
 
+@router.get("/{categoria_id}/podcasts")
+def read_podcasts_categoria(categoria_id: int, db: Session = Depends(get_db)):
+    categoria = categorialogica.get_categoria(db, categoria_id=categoria_id)
+    if categoria is None:
+        raise HTTPException(status_code=404, detail="Categoria no encontrada")
+    return categoria.podcasts
+
 @router.post("/", response_model=CategoriaModel)
 def create_categoria(categoria: CategoriaCreate, db: Session = Depends(get_db)):
     return categorialogica.create_categoria(db, categoria)
