@@ -8,5 +8,9 @@ tags_metadata = [
         "name": "podcasts",
         "description": "Operaciones con tabla Podcasts",
     },
+    {
+        "name": "autores",
+        "description": "Operaciones con tabla Autores",
+    }
 
 ]

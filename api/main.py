@@ -1,7 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Depends
 from api import SessionLocal,engine
-
-from api import tags_metadata, categoriasrutas, podcastsrutas
+from api import tags_metadata, categoriasrutas, podcastsrutas, autoresrutas
+from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 
 # Objeto app de tipo FastApi
 app = FastAPI(
@@ -18,10 +18,21 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata
 )
+oauth2_scheme = OAuth2PasswordBearer("/token")
 
 @app.get("/")
 async def root():
     return {"info": "Bienvenido a MastermindPodcast"}
+
+@app.get("/users/me")
+async def usuario(token: str = Depends(oauth2_scheme)):
+    print(token)
+    return {"info": "Usuario actual"}
+
+@app.post("/token")
+async def login(form_data:OAuth2PasswordRequestForm=Depends()):
+    print(form_data.username,form_data.password)
+    return {"access_token":"Pakito","token_type":"bearer"}
 
 #CATEGORIAS
 app.include_router(
@@ -35,5 +46,12 @@ app.include_router(
     podcastsrutas,
     tags=["podcasts"],
     prefix="/podcasts",
+)
+
+#AUTORES
+app.include_router(
+    autoresrutas,
+    tags=["autores"],
+    prefix="/autores",
 )
 

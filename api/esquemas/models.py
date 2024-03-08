@@ -1,3 +1,6 @@
+#Incorporar definiciones de classes futuras
+from __future__ import annotations
+
 from typing import Union
 from pydantic import BaseModel
 
@@ -11,6 +14,16 @@ class Categoria(BaseModel):
 class CategoriaCreate(BaseModel):
     nombre: str
 
+class Autor(BaseModel):
+    id: int
+    nombre: str
+    nacionalidad: str
+    class Config:
+        orm_mode = True
+#Prevenir loops
+class AutorPodcast(Autor):
+    podcasts : list[Podcast]
+
 class PodcastBase(BaseModel):
     id: int
     titulo: str
@@ -18,9 +31,13 @@ class PodcastBase(BaseModel):
     url: str
 
 class Podcast(PodcastBase):
-    autor_id: int
     categoria_id: int
     categoria : Categoria
+    class Config:
+        orm_mode = True
+
+class PodcastAutor(Podcast):
+    autores : list[Autor]
     class Config:
         orm_mode = True
 
@@ -28,5 +45,4 @@ class PodcastCreate(BaseModel):
     titulo: str
     descripcion: str
     url: str
-    autor_id: int
     categoria_id: int

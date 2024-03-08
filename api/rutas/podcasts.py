@@ -1,7 +1,7 @@
 from fastapi import Depends, APIRouter, HTTPException
 from sqlalchemy.orm import Session
 from api import SessionLocal, engine
-from api import podcastlogica, PodcastModel, PodcastCreate
+from api import podcastlogica, PodcastModel, PodcastCreate, PodcastAutorModel
 
 router = APIRouter()
 
@@ -13,7 +13,7 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/", response_model=list[PodcastModel])
+@router.get("/", response_model=list[PodcastAutorModel])
 def read_podcasts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     podcasts = podcastlogica.get_podcasts(db, skip=skip, limit=limit)
     return podcasts
