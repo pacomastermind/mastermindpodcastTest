@@ -56,6 +56,17 @@ class Autor(Base):
         secondary=podcast_autor, back_populates="autores"
     )
 
+class User(Base):
+
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    username = Column(String)
+    password = Column(String)
+    email = Column(String)
+    nombre = Column(String)
+    activo = Column(Boolean)
+
+
 
 
 

@@ -20,6 +20,27 @@ class Autor(BaseModel):
     nacionalidad: str
     class Config:
         orm_mode = True
+
+class UserBase(BaseModel):
+    username: str
+    email: str
+    nombre: str
+    activo: bool
+
+class UserCreate(UserBase):
+    password: str
+class User(UserBase):
+    id: int
+    password: str
+    class Config:
+        orm_mode = True
+
+class UserResponse(UserBase):
+    id: int
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
 #Prevenir loops
 class AutorPodcast(Autor):
     podcasts : list[Podcast]

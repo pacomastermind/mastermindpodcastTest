@@ -1,7 +1,12 @@
-from fastapi import FastAPI,Depends
+from fastapi import FastAPI,Depends, HTTPException, status
+from datetime import datetime, timedelta, timezone
+from sqlalchemy.orm import Session
 from api import SessionLocal,engine
 from api import tags_metadata, categoriasrutas, podcastsrutas, autoresrutas
+from api import UserCreate,auth, UserResponse, Token
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
+from passlib.context import CryptContext
+from decouple import config
 
 # Objeto app de tipo FastApi
 app = FastAPI(
@@ -18,7 +23,14 @@ app = FastAPI(
     },
     openapi_tags=tags_metadata
 )
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 oauth2_scheme = OAuth2PasswordBearer("/token")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @app.get("/")
 async def root():
@@ -30,9 +42,26 @@ async def usuario(token: str = Depends(oauth2_scheme)):
     return {"info": "Usuario actual"}
 
 @app.post("/token")
-async def login(form_data:OAuth2PasswordRequestForm=Depends()):
-    print(form_data.username,form_data.password)
-    return {"access_token":"Pakito","token_type":"bearer"}
+async def login(form_data:OAuth2PasswordRequestForm=Depends(), db: Session = Depends(get_db)):
+    user = auth.authenticate_user(db, form_data.username, form_data.password,pwd_context)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token_expires = timedelta(minutes=int(config("ACCESS_TOKEN_EXPIRE_MINUTES")))
+    access_token = auth.create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    print(access_token)
+    return Token(access_token=access_token, token_type="bearer")
+
+@app.post("/user/signup", response_model=UserResponse)
+async def signup(user: UserCreate, db: Session = Depends(get_db)):
+    user.password=pwd_context.hash(user.password)
+    return auth.create_user(db,user)
+
 
 #CATEGORIAS
 app.include_router(
