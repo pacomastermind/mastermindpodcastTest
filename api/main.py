@@ -8,6 +8,8 @@ from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from decouple import config
 
+from fastapi.middleware.cors import CORSMiddleware
+
 # Objeto app de tipo FastApi
 app = FastAPI(
     title="Mastermind Podcast API",
@@ -22,6 +24,19 @@ app = FastAPI(
         "url": "https://www.apache.org/licenses/LICENSE-2.0.html",
     },
     openapi_tags=tags_metadata
+)
+
+origins = [
+    "http://localhost",
+    "*"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 def get_db():
     db = SessionLocal()
@@ -43,6 +58,7 @@ async def usuario(token: str = Depends(oauth2_scheme)):
 
 @app.post("/token")
 async def login(form_data:OAuth2PasswordRequestForm=Depends(), db: Session = Depends(get_db)):
+    print("Username ${form_data.username}")
     user = auth.authenticate_user(db, form_data.username, form_data.password,pwd_context)
     if not user:
         raise HTTPException(
@@ -54,7 +70,6 @@ async def login(form_data:OAuth2PasswordRequestForm=Depends(), db: Session = Dep
     access_token = auth.create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    print(access_token)
     return Token(access_token=access_token, token_type="bearer")
 
 @app.post("/user/signup", response_model=UserResponse)
