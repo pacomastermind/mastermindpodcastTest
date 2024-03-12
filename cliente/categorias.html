@@ -12,22 +12,29 @@
     <link rel="stylesheet" href="./css/estilos.css">
 </head>
 <body>
-  <div class="container mt-2 p-1 w-50 text-center">
-    <img src="./img/cascos.png" alt=""><span class="fs-2 text-light ms-2 titulo-mastermind">Masterpodcasts</span>
-  </div>
-    <div class="container mt-2 p-5 w-50 bg-mastermind-50 border-5 border-danger rounded-4">
-        <form id="login">
-            <div class="form-group">
-              <label for="username">Username</label>
-              <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Introduzca username" name="username">
-            </div>
-            <div class="form-group mt-5">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-            </div>
-            <button type="submit" class="btn btn-danger mt-5">Login</button>
-          </form>
-    </div>
-    <script src="./js/app.js"></script>
-    </body>
+    <div class="container text-center mt-5">
+        <div class="row">
+          <div class="col">
+                <ul class="list-group" id="lista-categorias">
+                    <!--Lista de categorías obtenida contra API-->
+                </ul>
+          </div>
+          <div class="col">
+                <ul class="list-group" id="lista-categoria-podcasts">
+                    <!--Lista de podcasts de categoría  num5 obtenida contra API-->
+                </ul>            
+          </div>
+          <div class="col">
+            
+          </div>
+        </div>
+      </div>
+      <script src="./js/cat.js"></script>
+</body>
 </html>
+
+
+
+
+
+

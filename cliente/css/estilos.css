@@ -1,0 +1,17 @@
+body{
+    background-color: #f04140;
+}
+
+.bg-mastermind{
+    background-color: #f04140;
+}
+
+.bg-mastermind-50{
+    background-color: #ef8d8d;
+}
+
+.titulo-mastermind{
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: normal;  
+}
