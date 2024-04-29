@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 #Conexion a la BBDD
 SQLALCHEMY_DATABASE_URL = 'mysql+pymysql://root@localhost/mastermindpodcast'
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=False)
 
 #Debug
 #comprobamos la correcta conexion
